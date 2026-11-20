@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="docker-compose.yml" />
+    <File Path="GastroSENA.http" />
+    <File Path="GUIA-DE-USO.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="GastroSENA.Api/GastroSENA.Api.csproj" />
+</Solution>

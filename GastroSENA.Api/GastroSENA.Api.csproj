@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>GastroSENA.Api</RootNamespace>
+    <UserSecretsId>7e19e79f-1216-44a3-8f55-a8453dd90b87</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Npgsql: proveedor de EF Core para PostgreSQL -->
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.*" />
+    <!-- Herramientas de diseño para "dotnet ef migrations" -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <!-- Autenticación con JWT -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.*" />
+    <!-- Documento OpenAPI integrado en ASP.NET Core -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.*" />
+    <!-- Interfaz visual para explorar y probar la API en /scalar -->
+    <PackageReference Include="Scalar.AspNetCore" Version="3.1.1" />
+  </ItemGroup>
+
+</Project>

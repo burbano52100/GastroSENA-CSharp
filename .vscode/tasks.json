@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/GastroSENA.Api/GastroSENA.Api.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "API: ejecutar con recarga en caliente",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["watch", "run", "--project", "${workspaceFolder}/GastroSENA.Api/GastroSENA.Api.csproj"],
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "EF: nueva migración",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["ef", "migrations", "add", "${input:nombreMigracion}"],
+      "options": { "cwd": "${workspaceFolder}/GastroSENA.Api" },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "EF: quitar última migración",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["ef", "migrations", "remove"],
+      "options": { "cwd": "${workspaceFolder}/GastroSENA.Api" },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Secretos: ver",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["user-secrets", "list"],
+      "options": { "cwd": "${workspaceFolder}/GastroSENA.Api" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Secretos: cambiar",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["user-secrets", "set", "${input:claveSecreto}", "${input:valorSecreto}"],
+      "options": { "cwd": "${workspaceFolder}/GastroSENA.Api" },
+      "problemMatcher": []
+    },
+    {
+      "label": "NuGet: agregar paquete",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["add", "package", "${input:paquete}"],
+      "options": { "cwd": "${workspaceFolder}/GastroSENA.Api" },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    { "id": "nombreMigracion", "type": "promptString", "description": "Nombre de la migración (ej. AgregarMenu)" },
+    { "id": "claveSecreto", "type": "promptString", "description": "Clave del secreto (ej. Jwt:Clave, Admin:Password)" },
+    { "id": "valorSecreto", "type": "promptString", "description": "Valor del secreto", "password": true },
+    { "id": "paquete", "type": "promptString", "description": "Nombre del paquete NuGet (ej. Scalar.AspNetCore)" }
+  ]
+}

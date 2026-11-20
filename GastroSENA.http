@@ -1,0 +1,123 @@
+# Peticiones de prueba de GastroSENA API.
+# Ajusta @baseUrl al puerto que muestre Visual Studio al ejecutar la API.
+# Después de cada login, pega el token de la respuesta en la variable correspondiente.
+
+@baseUrl = http://localhost:5000
+@token = PEGA_AQUI_EL_TOKEN_DEL_ESTUDIANTE
+@tokenAdmin = PEGA_AQUI_EL_TOKEN_DEL_ADMIN
+@claveDispositivo = clave-del-lector-facial
+
+### 1. Estado de la API
+GET {{baseUrl}}/health
+
+### 2. Registrar estudiante (público)
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{
+  "nombre": "Estudiante de prueba",
+  "documento": "1000000001",
+  "email": "prueba@sena.edu.co",
+  "password": "clave12345"
+}
+
+### 3. Iniciar sesión como estudiante (copia el token en @token)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@sena.edu.co",
+  "password": "clave12345"
+}
+
+### 3b. Iniciar sesión como administrador (copia el token en @tokenAdmin)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gastrosena.local",
+  "password": "UnaClaveSegura123"
+}
+
+### 4. Perfil, saldo y fichas
+GET {{baseUrl}}/api/usuarios/me
+Authorization: Bearer {{token}}
+
+### 5. Recargar saldo (simulado)
+POST {{baseUrl}}/api/usuarios/me/recargas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "monto": 50000
+}
+
+### 6. Movimientos de saldo y fichas
+GET {{baseUrl}}/api/usuarios/me/movimientos
+Authorization: Bearer {{token}}
+
+### 7. Precio de la ficha
+GET {{baseUrl}}/api/fichas/precio
+Authorization: Bearer {{token}}
+
+### 8. Comprar fichas
+POST {{baseUrl}}/api/fichas/compras
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cantidad": 5
+}
+
+### 9. Reservar almuerzo (usa una fecha futura)
+POST {{baseUrl}}/api/reservas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "fecha": "2026-11-20"
+}
+
+### 10. Mis reservas
+GET {{baseUrl}}/api/reservas/me
+Authorization: Bearer {{token}}
+
+### 11. Detalle de una reserva
+GET {{baseUrl}}/api/reservas/1
+Authorization: Bearer {{token}}
+
+### 12. Cancelar una reserva (devuelve la ficha)
+DELETE {{baseUrl}}/api/reservas/1
+Authorization: Bearer {{token}}
+
+### 13. Reconocimiento facial (lo envía el lector; no lleva JWT)
+POST {{baseUrl}}/api/entradas/reconocimiento
+X-Api-Key: {{claveDispositivo}}
+Content-Type: application/json
+
+{
+  "documento": "1000000001",
+  "confianza": 0.93,
+  "dispositivo": "camara-comedor-1"
+}
+
+### 14. Admin: almuerzos reservados del día
+GET {{baseUrl}}/api/admin/reservas?fecha=2026-11-20
+Authorization: Bearer {{tokenAdmin}}
+
+### 15. Admin: entradas del día
+GET {{baseUrl}}/api/admin/entradas?fecha=2026-11-20
+Authorization: Bearer {{tokenAdmin}}
+
+### 16. Admin: listar usuarios
+GET {{baseUrl}}/api/admin/usuarios
+Authorization: Bearer {{tokenAdmin}}
+
+### 17. Admin: desactivar un usuario
+PATCH {{baseUrl}}/api/admin/usuarios/2/activo
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "activo": false
+}
